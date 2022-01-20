@@ -32,6 +32,13 @@
 
 on: [push]
 
+env:
+  AZURE_CONTAINER_REGISTRY: 'tsvetinaRegistry'
+  PROJECT_NAME: 'library-app'
+  RESOURCE_GROUP: 'telerik-devops'
+  CLUSTER_NAME: 'telerik-devops-aks'
+  CHART_PATH: './charts/library-app'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -64,7 +71,6 @@ jobs:
       with:
         renderEngine: 'helm'
         helmChart: ${{ env.CHART_PATH }}
-        overrideFiles: ${{ env.CHART_OVERRIDE_PATH }}
         overrides: |     
           replicas:2
         helm-version: 'latest' 
