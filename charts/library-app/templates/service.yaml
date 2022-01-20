@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: library-app-release
+  name: library-app-service-release
   labels:
     {{- include "library-app.labels" . | nindent 4 }}
 spec:

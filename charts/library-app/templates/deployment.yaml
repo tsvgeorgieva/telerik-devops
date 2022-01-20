@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "library-app.fullname" . }}
+  name: library-app-release
   labels:
     {{- include "library-app.labels" . | nindent 4 }}
 spec:
