@@ -54,9 +54,9 @@ jobs:
     
     # Container build and push to a Azure Container Registry (ACR)
     - run: |
-        docker build . -t ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.PROJECT_NAME }}:${{ github.sha }}
+        docker build . -f Library.WebAPI/Dockerfile -t ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.PROJECT_NAME }}:${{ github.sha }}
         docker push ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.PROJECT_NAME }}:${{ github.sha }}
-      working-directory: ./src/Library/Library.WebAPI
+      working-directory: src/Library
       
   deploy:
     runs-on: ubuntu-latest
