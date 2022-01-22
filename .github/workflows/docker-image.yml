@@ -55,5 +55,7 @@ jobs:
     steps:
     - uses: actions/checkout@main
     - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           git tag -a ${{ inputs.build-version }}
           git push origin ${{ inputs.build-version }}
