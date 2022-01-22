@@ -23,7 +23,9 @@ on:
       azure-container-registry-password:
         required: true
     outputs:
-      docker-image-url: ${{ jobs.build.outputs.docker-image-url }}
+      docker-image-url: 
+        description: "The URL of the pushed image in ACR"
+        value: ${{ jobs.build.outputs.docker-image-url }}
 
 jobs:
   build:

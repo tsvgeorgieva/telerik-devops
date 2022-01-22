@@ -6,7 +6,9 @@ on:
         required: true
         type: string
     outputs:
-      build-version: ${{ jobs.semver.outputs.version }}
+      build-version:
+        description: "The current build version"
+        value: ${{ jobs.semver.outputs.build-version }}
 
 jobs:
   semver:
