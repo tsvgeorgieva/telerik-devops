@@ -3,14 +3,6 @@ on:
   push:
     branches: [ main ]
 
-env:
-  BUILD_VERSION: ''
-  AZURE_CONTAINER_REGISTRY: 'tsvetinaRegistry'
-  PROJECT_NAME: 'library-app'
-  RESOURCE_GROUP: 'telerik-devops'
-  CLUSTER_NAME: 'telerik-devops-aks'
-  CHART_PATH: './charts/library-app'
-
 jobs:
   semver:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/semver.yml@main
@@ -25,8 +17,8 @@ jobs:
     with:
       dockerfile-path: 'Library.WebAPI/Dockerfile'
       docker-working-directory: 'src/Library'
-      azure-container-registry: ${{ env.AZURE_CONTAINER_REGISTRY }}
-      project-name: ${{ env.PROJECT_NAME }}
+      azure-container-registry: 'tsvetinaRegistry'
+      project-name: 'library-app'
       build-version: ${{ jobs.semver.outputs.build-version }}
     secrets:
       azure-container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
@@ -35,9 +27,9 @@ jobs:
   deploy:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/deploy.yml@main
     with:
-      azure-resource-group: ${{ env.RESOURCE_GROUP }}
-      aks-cluster-name: ${{ env.CLUSTER_NAME }}
-      helm-chart-path: ${{ env.CHART_PATH }}
+      azure-resource-group: 'telerik-devops'
+      aks-cluster-name: 'telerik-devops-aks'
+      helm-chart-path: './charts/library-app'
       build-version: ${{ jobs.semver.outputs.build-version }}
       docker-image-url: ${{ jobs.build.outputs.docker-image-url }}
     secrets:
