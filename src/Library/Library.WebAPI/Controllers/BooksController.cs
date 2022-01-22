@@ -13,7 +13,11 @@ namespace Library.WebAPI.Controllers
         [HttpGet]
         public IEnumerable<Book> Get()
         {
-            return new Book[] { new Book { Author = "pesho", Name = "my book" } };
+            return new Book[]
+            {
+                new Book { Author = "pesho", Name = "my book" },
+                new Book { Author = "gosho", Name = "hello" }
+            };
         }
 
         // GET api/<BooksController>/5

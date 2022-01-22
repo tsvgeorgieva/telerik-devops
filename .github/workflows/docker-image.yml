@@ -50,6 +50,7 @@ jobs:
         docker push ${{ env.DOCKER_IMAGE_URL }}
       working-directory: ${{ inputs.docker-working-directory }}
   tag-release:
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@main
