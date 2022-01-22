@@ -30,7 +30,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    needs: test
     env:
       DOCKER_IMAGE_URL: '${{ inputs.azure-container-registry }}.azurecr.io/${{ inputs.project-name }}:${{ inputs.build-version }}'
     outputs:
