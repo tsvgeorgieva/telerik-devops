@@ -1,0 +1,58 @@
+on:
+  workflow_call:
+    inputs:
+      azure-resource-group:
+        required: true
+        type: string
+      aks-cluster-name:
+        required: true
+        type: string
+      helm-chart-path:
+        required: true
+        type: string
+      build-version:
+        required: true
+        type: string
+      docker-image-url:
+        required: true
+        type: string
+    secrets:
+      azure-credentials:
+        required: true
+
+jobs:    
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@main
+    
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.azure-credentials }}
+    
+    - name: Gets K8s context
+      uses: azure/aks-set-context@v1
+      with:
+          creds: ${{ secrets.azure-credentials }}
+          resource-group: ${{ inputs.azure-resource-group }}
+          cluster-name: ${{ inputs.aks-cluster-name }}
+      id: login
+
+    - name: Configure deployment
+      uses: azure/k8s-bake@v1
+      with:
+        renderEngine: 'helm'
+        helmChart: ${{ inputs.helm-chart-path }}
+        overrides: |     
+          image.tag:${{ inputs.build-version }}
+        helm-version: 'latest' 
+      id: bake
+
+    - name: Deploys application
+      uses: Azure/k8s-deploy@v1
+      with:
+        manifests: ${{ steps.bake.outputs.manifestsBundle }}
+        images: |
+          ${{ inputs.docker-image-url }}
