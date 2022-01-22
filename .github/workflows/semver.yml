@@ -14,16 +14,17 @@ jobs:
   semver:
     runs-on: ubuntu-latest
     outputs:
-      build-version: ${{ steps.semantic.outputs.version }}
+      build-version: ${{ steps.version.outputs.version }}
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - name: semantic
+    - name: Version
+      id: version
       uses: paulhatch/semantic-version@v4.0.2
     - name: Print version
       run: |
-        echo ${{ steps.semantic.outputs.version }}
-        echo ${{ steps.semantic.outputs.version_tag }}
-        echo ${{ steps.semantic.outputs.major }}
-        echo ${{ steps.semantic.outputs.changed }}
+        echo ${{ steps.version.outputs.version }}
+        echo ${{ steps.version.outputs.version_tag }}
+        echo ${{ steps.version.outputs.major }}
+        echo ${{ steps.version.outputs.changed }}
