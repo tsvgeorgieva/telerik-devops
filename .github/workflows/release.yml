@@ -13,26 +13,15 @@ env:
 
 jobs:
   semver:
-    runs-on: ubuntu-latest
-    steps:
-    - name: semver
-      uses: tsvgeorgieva/telerik-devops/.github/workflows/semver-release.yml@main
+    uses: tsvgeorgieva/telerik-devops/.github/workflows/semver-release.yml@main
       with:
         version-format: "${major}.${minor}.${patch}.${increment}"
-    outputs: 
-      build-version: ${{ steps.semver.outputs.build-version }}
 
   test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: tsvgeorgieva/telerik-devops/.github/workflows/test.yml@main
+    uses: tsvgeorgieva/telerik-devops/.github/workflows/test.yml@main
 
   build:
-    runs-on: ubuntu-latest
-    needs: [semver, test]
-    steps:
-    - name: build-docker-image
-      uses: tsvgeorgieva/telerik-devops/.github/workflows/docker-image.yml@main
+    uses: tsvgeorgieva/telerik-devops/.github/workflows/docker-image.yml@main
       with:
         dockerfile-path: 'Library.WebAPI/Dockerfile'
         docker-working-directory: 'src/Library'
@@ -42,14 +31,9 @@ jobs:
       secrets:
         azure-container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
         azure-container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-    outputs: 
-      docker-image-url: ${{ steps.semver.build-docker-image.docker-image-url }}
       
   deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - uses: tsvgeorgieva/telerik-devops/.github/workflows/deploy.yml@main
+    uses: tsvgeorgieva/telerik-devops/.github/workflows/deploy.yml@main
       with:
         azure-resource-group: ${{ env.RESOURCE_GROUP }}
         aks-cluster-name: ${{ env.CLUSTER_NAME }}
