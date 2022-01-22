@@ -14,31 +14,31 @@ env:
 jobs:
   semver:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/semver-release.yml@main
-      with:
-        version-format: "${major}.${minor}.${patch}.${increment}"
+    with:
+      version-format: "${major}.${minor}.${patch}.${increment}"
 
   test:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/test.yml@main
 
   build:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/docker-image.yml@main
-      with:
-        dockerfile-path: 'Library.WebAPI/Dockerfile'
-        docker-working-directory: 'src/Library'
-        azure-container-registry: ${{ env.AZURE_CONTAINER_REGISTRY }}
-        project-name: ${{ env.PROJECT_NAME }}
-        build-version: ${{ jobs.semver.outputs.build-version }}
-      secrets:
-        azure-container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
-        azure-container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+    with:
+      dockerfile-path: 'Library.WebAPI/Dockerfile'
+      docker-working-directory: 'src/Library'
+      azure-container-registry: ${{ env.AZURE_CONTAINER_REGISTRY }}
+      project-name: ${{ env.PROJECT_NAME }}
+      build-version: ${{ jobs.semver.outputs.build-version }}
+    secrets:
+      azure-container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
+      azure-container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
       
   deploy:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/deploy.yml@main
-      with:
-        azure-resource-group: ${{ env.RESOURCE_GROUP }}
-        aks-cluster-name: ${{ env.CLUSTER_NAME }}
-        helm-chart-path: ${{ env.CHART_PATH }}
-        build-version: ${{ jobs.semver.outputs.build-version }}
-        docker-image-url: ${{ jobs.build.outputs.docker-image-url }}
-      secrets:
-        azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
+    with:
+      azure-resource-group: ${{ env.RESOURCE_GROUP }}
+      aks-cluster-name: ${{ env.CLUSTER_NAME }}
+      helm-chart-path: ${{ env.CHART_PATH }}
+      build-version: ${{ jobs.semver.outputs.build-version }}
+      docker-image-url: ${{ jobs.build.outputs.docker-image-url }}
+    secrets:
+      azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
