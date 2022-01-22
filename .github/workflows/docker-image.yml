@@ -1,4 +1,4 @@
-name: Build and push docker image
+name: Build and push docker image to ACR
 
 on:
   workflow_call:
@@ -49,3 +49,10 @@ jobs:
         docker build . -f ${{ inputs.dockerfile-path }} -t ${{ env.DOCKER_IMAGE_URL }}
         docker push ${{ env.DOCKER_IMAGE_URL }}
       working-directory: ${{ inputs.docker-working-directory }}
+  tag-release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+    - run: |
+          git tag -a ${{ inputs.build-version }}
+          git push origin ${{ inputs.build-version }}
