@@ -13,24 +13,26 @@ jobs:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/test.yml@main
 
   build:
+    needs: [semver, test]
     uses: tsvgeorgieva/telerik-devops/.github/workflows/docker-image.yml@main
     with:
       dockerfile-path: 'Library.WebAPI/Dockerfile'
       docker-working-directory: 'src/Library'
       azure-container-registry: 'tsvetinaRegistry'
       project-name: 'library-app'
-      build-version: ${{ jobs.semver.outputs.build-version }}
+      build-version: ${{ needs.semver.outputs.build-version }}
     secrets:
       azure-container-registry-username: ${{ secrets.REGISTRY_USERNAME }}
       azure-container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
       
   deploy:
+    needs: [semver, build]
     uses: tsvgeorgieva/telerik-devops/.github/workflows/deploy.yml@main
     with:
       azure-resource-group: 'telerik-devops'
       aks-cluster-name: 'telerik-devops-aks'
       helm-chart-path: './charts/library-app'
-      build-version: ${{ jobs.semver.outputs.build-version }}
-      docker-image-url: ${{ jobs.build.outputs.docker-image-url }}
+      build-version: ${{ needs.semver.outputs.build-version }}
+      docker-image-url: ${{ needs.build.outputs.docker-image-url }}
     secrets:
       azure-credentials: ${{ secrets.AZURE_CREDENTIALS }}
