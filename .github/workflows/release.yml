@@ -13,15 +13,15 @@ env:
 
 jobs:
   semver:
-    uses: tsvgeorgieva/telerik-devops/.github/workflows/semver-release.yml@main
+    uses: tsvgeorgieva/telerik-devops/.github/workflows/templates/semver.yml@main
     with:
       version-format: "${major}.${minor}.${patch}.${increment}"
 
   test:
-    uses: tsvgeorgieva/telerik-devops/.github/workflows/test.yml@main
+    uses: tsvgeorgieva/telerik-devops/.github/workflows/templates/test.yml@main
 
   build:
-    uses: tsvgeorgieva/telerik-devops/.github/workflows/docker-image.yml@main
+    uses: tsvgeorgieva/telerik-devops/.github/workflows/templates/docker-image.yml@main
     with:
       dockerfile-path: 'Library.WebAPI/Dockerfile'
       docker-working-directory: 'src/Library'
@@ -33,7 +33,7 @@ jobs:
       azure-container-registry-password: ${{ secrets.REGISTRY_PASSWORD }}
       
   deploy:
-    uses: tsvgeorgieva/telerik-devops/.github/workflows/deploy.yml@main
+    uses: tsvgeorgieva/telerik-devops/.github/workflows/templates/deploy.yml@main
     with:
       azure-resource-group: ${{ env.RESOURCE_GROUP }}
       aks-cluster-name: ${{ env.CLUSTER_NAME }}
