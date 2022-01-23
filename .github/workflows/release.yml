@@ -12,8 +12,14 @@ jobs:
   test:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/test.yml@main
 
+  sast:
+    uses: tsvgeorgieva/telerik-devops/.github/workflows/sast.yml@main
+    secrets:
+      sonar_token: ${{ secrets.SONAR_TOKEN }}
+      github_token: ${{ secrets.GITHUB_TOKEN }}
+
   build:
-    needs: [semver, test]
+    needs: [semver, test, sast]
     uses: tsvgeorgieva/telerik-devops/.github/workflows/docker-image.yml@main
     with:
       dockerfile-path: 'Library.WebAPI/Dockerfile'
