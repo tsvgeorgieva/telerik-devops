@@ -43,10 +43,10 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ inputs.github-token }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ inputs.sonar-token }}
+          GITHUB_TOKEN: ${{ secrets.github-token }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.sonar-token }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"tsvgeorgieva_telerik-devops" /o:"tsvgeorgieva" /d:sonar.login="${{ inputs.sonar-token }}" /d:sonar.host.url="https://sonarcloud.io"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"tsvgeorgieva_telerik-devops" /o:"tsvgeorgieva" /d:sonar.login="${{ secrets.sonar-token }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build src/Library/Library.WebAPI/Library.WebAPI.csproj
-          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ inputs.sonar-token }}"
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.sonar-token }}"
