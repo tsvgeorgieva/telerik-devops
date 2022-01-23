@@ -9,7 +9,7 @@ jobs:
   sast:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/sast.yml@main
     secrets:
-      sonar_token: ${{ secrets.SONAR_TOKEN }}
-      github_token: ${{ secrets.GITHUB_TOKEN }}
+      sonar-token: ${{ secrets.SONAR_TOKEN }}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
 
 
