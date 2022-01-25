@@ -15,8 +15,7 @@ namespace Library.WebAPI.Controllers
         {
             return new Book[]
             {
-                new Book { Author = "pesho", Name = "my book" },
-                new Book { Author = "gosho", Name = "hello" }
+                new Book { Author = "Tsvety", Name = "my book" }
             };
         }
 
