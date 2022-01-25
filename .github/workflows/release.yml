@@ -7,7 +7,7 @@ jobs:
   semver:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/semver.yml@main
     with:
-      version-format: "${major}.${minor}.${patch}.${increment}"
+      version-format: "${major}.${minor}.${patch}.${{ env.GITHUB_RUN_ATTEMPT }}"
 
   test:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/test.yml@main
