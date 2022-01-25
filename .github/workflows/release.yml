@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
 env:
-  VERSION_FORMAT: '${major}.${minor}.${patch}.${{ GITHUB_RUN_NUMBER }}'
+  VERSION_FORMAT: '${major}.${minor}.${patch}.${{ env.GITHUB_RUN_NUMBER }}'
 
 jobs:
   semver:
