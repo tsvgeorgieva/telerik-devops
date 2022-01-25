@@ -2,10 +2,10 @@ name: Release
 on:
   push:
     branches: [ main ]
+env:
+  VERSION_FORMAT: '${major}.${minor}.${patch}.${{ GITHUB_RUN_NUMBER }}'
 
 jobs:
-  env:
-    VERSION_FORMAT: '${major}.${minor}.${patch}.${{ GITHUB_RUN_NUMBER }}'
   semver:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/semver.yml@main
     with:
