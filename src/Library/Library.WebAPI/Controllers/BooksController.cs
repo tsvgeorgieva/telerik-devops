@@ -1,4 +1,5 @@
-﻿using Library.WebAPI.Models;
+﻿using System.Net;
+using Library.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -46,6 +47,21 @@ namespace Library.WebAPI.Controllers
         public IActionResult Delete(int id)
         {
             return NoContent();
+        }
+
+        public IActionResult ReadContentOfURL(string url)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url); // Noncompliant
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responseFromServer = reader.ReadToEnd();
+
+            reader.Close();
+            dataStream.Close();
+            response.Close();
+            return Content(responseFromServer);
         }
     }
 }
