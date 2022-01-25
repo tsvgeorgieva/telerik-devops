@@ -4,12 +4,12 @@ on:
     branches: [ main ]
 
 jobs:
+  env:
+    VERSION_FORMAT: '${major}.${minor}.${patch}.${{ GITHUB_RUN_NUMBER }}'
   semver:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/semver.yml@main
     with:
       version-format: ${{ env.VERSION_FORMAT }}
-    env:
-      VERSION_FORMAT: '${major}.${minor}.${patch}.${{ GITHUB_RUN_NUMBER }}'
 
   test:
     uses: tsvgeorgieva/telerik-devops/.github/workflows/test.yml@main
